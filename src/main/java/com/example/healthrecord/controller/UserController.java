@@ -47,7 +47,7 @@ public class UserController {
         } else {
             msg.setError_code(0);
             msg.setStatus("fail");
-            msg.setMsg("登录失败啊");
+            msg.setMsg("登录失败啊啊");
         }
         System.out.println("返回信息：" + msg.getError_code());
         return msg;
