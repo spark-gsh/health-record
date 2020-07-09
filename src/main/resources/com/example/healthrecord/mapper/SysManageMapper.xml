@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.healthrecord.mapper.SysManageMapper">
+    <resultMap id="BaseResultMap" type="com.example.healthrecord.entity.SysManage">
+        <id column="s_m_id" jdbcType="VARCHAR" property="sMId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
+        <result column="s_d_id" jdbcType="VARCHAR" property="sDId"/>
+
+        <association property="roleManage" column="s_d_id"
+                     select="com.example.healthrecord.mapper.RoleManageMapper.selectByPrimaryKey"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    s_m_id, username, `password`, creat_time, s_d_id
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_manage
+        where s_m_id = #{sMId,jdbcType=VARCHAR}
+    </select>
+    <select id="searchByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_manage
+        where username = #{username}
+    </select>
+    <select id="selectByExampleCount" resultType="java.lang.Integer">
+        select
+        count(1)
+        from sys_manage
+        <where>
+            <if test="sMId!=null and sMId!=''">
+                <bind name="sMId" value="'%'+sMId+'%'"/>
+                and s_m_id like #{sMId}
+            </if>
+        </where>
+    </select>
+    <select id="searchByExampleWithPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_manage
+        <where>
+            <if test="sys.sMId != null and sys.sMId != ''">
+                <bind name="sMId" value="'%'+sys.sMId+'%'"/>
+                and s_m_id like #{sMId}
+            </if>
+        </where>
+        limit #{begin},#{limit}
+    </select>
+    <select id="searchNum" resultType="java.lang.Integer">
+      select
+      count(*)
+      from sys_manage
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_manage
+    where s_m_id = #{sMId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.example.healthrecord.entity.SysManage">
+    insert into sys_manage (s_m_id, username, `password`, 
+      creat_time, s_d_id)
+    values (#{sMId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{creatTime,jdbcType=TIMESTAMP}, #{sDId,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.example.healthrecord.entity.SysManage">
+        insert into sys_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sMId != null">
+                s_m_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="sDId != null">
+                s_d_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sMId != null">
+                #{sMId,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sDId != null">
+                #{sDId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.healthrecord.entity.SysManage">
+        update sys_manage
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                `password` = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sDId != null">
+                s_d_id = #{sDId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where s_m_id = #{sMId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.example.healthrecord.entity.SysManage">
+    update sys_manage
+    set username = #{username,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      s_d_id = #{sDId,jdbcType=VARCHAR}
+    where s_m_id = #{sMId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.healthrecord.mapper.MedicalCheckMapper">
+    <resultMap id="BaseResultMap" type="com.example.healthrecord.entity.MedicalCheck">
+        <id column="m_c_id" jdbcType="VARCHAR" property="mCId"/>
+        <result column="b_r_id" jdbcType="VARCHAR" property="bRId"/>
+        <result column="internal" jdbcType="VARCHAR" property="internal"/>
+        <result column="surgery" jdbcType="VARCHAR" property="surgery"/>
+        <result column="eye" jdbcType="VARCHAR" property="eye"/>
+        <result column="five_sense" jdbcType="VARCHAR" property="fiveSense"/>
+        <result column="neurology" jdbcType="VARCHAR" property="neurology"/>
+        <result column="blood" jdbcType="VARCHAR" property="blood"/>
+        <result column="blood_biochemistry" jdbcType="VARCHAR" property="bloodBiochemistry"/>
+        <result column="urine" jdbcType="VARCHAR" property="urine"/>
+        <result column="radiate" jdbcType="VARCHAR" property="radiate"/>
+        <result column="ECG" jdbcType="VARCHAR" property="ecg"/>
+        <result column="physical_result" jdbcType="VARCHAR" property="physicalResult"/>
+        <result column="physical_advice" jdbcType="VARCHAR" property="physicalAdvice"/>
+        <result column="physical_time" jdbcType="VARCHAR" property="physicalTime"/>
+        <result column="physical_doctor" jdbcType="VARCHAR" property="physicalDoctor"/>
+
+        <association property="basicRecord" column="b_r_id"
+                     select="com.example.healthrecord.mapper.BasicRecordMapper.selectByPrimaryKey"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    m_c_id, b_r_id, internal, surgery, eye, five_sense, neurology, blood, blood_biochemistry, 
+    urine, radiate, ECG, physical_result, physical_advice, physical_time, physical_doctor
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from medical_check
+        where m_c_id = #{mCId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByExampleCount" resultType="java.lang.Integer">
+        select
+        count(1)
+        from medical_check
+        <where>
+            <if test="mCId!=null and mCId!=''">
+                <bind name="mCId" value="'%'+mCId+'%'"/>
+                and m_c_id like #{mCId}
+            </if>
+        </where>
+    </select>
+    <select id="searchByExampleWithPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from medical_check
+        <where>
+            <if test="record.mCId != null and record.mCId != ''">
+                <bind name="mCId" value="'%'+record.mCId+'%'"/>
+                and m_c_id like #{mCId}
+            </if>
+        </where>
+        limit #{begin},#{limit}
+    </select>
+    <select id="searchNum" resultType="java.lang.Integer">
+      select
+      count(*)
+      from medical_check
+    </select>
+    <select id="searchBybRId"  parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from medical_check
+        where b_r_id = #{bRId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from medical_check
+    where m_c_id = #{mCId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.example.healthrecord.entity.MedicalCheck">
+    insert into medical_check (m_c_id, b_r_id, internal, 
+      surgery, eye, five_sense, 
+      neurology, blood, blood_biochemistry, 
+      urine, radiate, ECG, 
+      physical_result, physical_advice, physical_time, 
+      physical_doctor)
+    values (#{mCId,jdbcType=VARCHAR}, #{bRId,jdbcType=VARCHAR}, #{internal,jdbcType=VARCHAR}, 
+      #{surgery,jdbcType=VARCHAR}, #{eye,jdbcType=VARCHAR}, #{fiveSense,jdbcType=VARCHAR}, 
+      #{neurology,jdbcType=VARCHAR}, #{blood,jdbcType=VARCHAR}, #{bloodBiochemistry,jdbcType=VARCHAR}, 
+      #{urine,jdbcType=VARCHAR}, #{radiate,jdbcType=VARCHAR}, #{ecg,jdbcType=VARCHAR}, 
+      #{physicalResult,jdbcType=VARCHAR}, #{physicalAdvice,jdbcType=VARCHAR}, #{physicalTime,jdbcType=VARCHAR}, 
+      #{physicalDoctor,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.example.healthrecord.entity.MedicalCheck">
+        insert into medical_check
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mCId != null">
+                m_c_id,
+            </if>
+            <if test="bRId != null">
+                b_r_id,
+            </if>
+            <if test="internal != null">
+                internal,
+            </if>
+            <if test="surgery != null">
+                surgery,
+            </if>
+            <if test="eye != null">
+                eye,
+            </if>
+            <if test="fiveSense != null">
+                five_sense,
+            </if>
+            <if test="neurology != null">
+                neurology,
+            </if>
+            <if test="blood != null">
+                blood,
+            </if>
+            <if test="bloodBiochemistry != null">
+                blood_biochemistry,
+            </if>
+            <if test="urine != null">
+                urine,
+            </if>
+            <if test="radiate != null">
+                radiate,
+            </if>
+            <if test="ecg != null">
+                ECG,
+            </if>
+            <if test="physicalResult != null">
+                physical_result,
+            </if>
+            <if test="physicalAdvice != null">
+                physical_advice,
+            </if>
+            <if test="physicalTime != null">
+                physical_time,
+            </if>
+            <if test="physicalDoctor != null">
+                physical_doctor,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mCId != null">
+                #{mCId,jdbcType=VARCHAR},
+            </if>
+            <if test="bRId != null">
+                #{bRId,jdbcType=VARCHAR},
+            </if>
+            <if test="internal != null">
+                #{internal,jdbcType=VARCHAR},
+            </if>
+            <if test="surgery != null">
+                #{surgery,jdbcType=VARCHAR},
+            </if>
+            <if test="eye != null">
+                #{eye,jdbcType=VARCHAR},
+            </if>
+            <if test="fiveSense != null">
+                #{fiveSense,jdbcType=VARCHAR},
+            </if>
+            <if test="neurology != null">
+                #{neurology,jdbcType=VARCHAR},
+            </if>
+            <if test="blood != null">
+                #{blood,jdbcType=VARCHAR},
+            </if>
+            <if test="bloodBiochemistry != null">
+                #{bloodBiochemistry,jdbcType=VARCHAR},
+            </if>
+            <if test="urine != null">
+                #{urine,jdbcType=VARCHAR},
+            </if>
+            <if test="radiate != null">
+                #{radiate,jdbcType=VARCHAR},
+            </if>
+            <if test="ecg != null">
+                #{ecg,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalResult != null">
+                #{physicalResult,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalAdvice != null">
+                #{physicalAdvice,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalTime != null">
+                #{physicalTime,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalDoctor != null">
+                #{physicalDoctor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.healthrecord.entity.MedicalCheck">
+        update medical_check
+        <set>
+            <if test="bRId != null">
+                b_r_id = #{bRId,jdbcType=VARCHAR},
+            </if>
+            <if test="internal != null">
+                internal = #{internal,jdbcType=VARCHAR},
+            </if>
+            <if test="surgery != null">
+                surgery = #{surgery,jdbcType=VARCHAR},
+            </if>
+            <if test="eye != null">
+                eye = #{eye,jdbcType=VARCHAR},
+            </if>
+            <if test="fiveSense != null">
+                five_sense = #{fiveSense,jdbcType=VARCHAR},
+            </if>
+            <if test="neurology != null">
+                neurology = #{neurology,jdbcType=VARCHAR},
+            </if>
+            <if test="blood != null">
+                blood = #{blood,jdbcType=VARCHAR},
+            </if>
+            <if test="bloodBiochemistry != null">
+                blood_biochemistry = #{bloodBiochemistry,jdbcType=VARCHAR},
+            </if>
+            <if test="urine != null">
+                urine = #{urine,jdbcType=VARCHAR},
+            </if>
+            <if test="radiate != null">
+                radiate = #{radiate,jdbcType=VARCHAR},
+            </if>
+            <if test="ecg != null">
+                ECG = #{ecg,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalResult != null">
+                physical_result = #{physicalResult,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalAdvice != null">
+                physical_advice = #{physicalAdvice,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalTime != null">
+                physical_time = #{physicalTime,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalDoctor != null">
+                physical_doctor = #{physicalDoctor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where m_c_id = #{mCId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.example.healthrecord.entity.MedicalCheck">
+    update medical_check
+    set b_r_id = #{bRId,jdbcType=VARCHAR},
+      internal = #{internal,jdbcType=VARCHAR},
+      surgery = #{surgery,jdbcType=VARCHAR},
+      eye = #{eye,jdbcType=VARCHAR},
+      five_sense = #{fiveSense,jdbcType=VARCHAR},
+      neurology = #{neurology,jdbcType=VARCHAR},
+      blood = #{blood,jdbcType=VARCHAR},
+      blood_biochemistry = #{bloodBiochemistry,jdbcType=VARCHAR},
+      urine = #{urine,jdbcType=VARCHAR},
+      radiate = #{radiate,jdbcType=VARCHAR},
+      ECG = #{ecg,jdbcType=VARCHAR},
+      physical_result = #{physicalResult,jdbcType=VARCHAR},
+      physical_advice = #{physicalAdvice,jdbcType=VARCHAR},
+      physical_time = #{physicalTime,jdbcType=VARCHAR},
+      physical_doctor = #{physicalDoctor,jdbcType=VARCHAR}
+    where m_c_id = #{mCId,jdbcType=VARCHAR}
+  </update>
+</mapper>

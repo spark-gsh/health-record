@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="js/pathology.js"></script>
+
+
+    <style type="text/css">
+        .layui-tab-title li {
+            width: 8.96%;
+        }
+    </style>
+</head>
+<!--高血压-->
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="welcome.html">首页</a>
+        <a>
+          <cite>病例库资料</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small layui-btn-own" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+
+
+<div class="x-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+            <input id="tbxDiseaseId" type="text" name="username" placeholder="关键字查询" autocomplete="off"
+                   class="layui-input">
+            <button id="search" class="layui-btn" type="button"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+    </div>
+    <div class="layui-tab layui-tab-card" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li class="layui-this" data-status="in">内科</li>
+            <li data-status="out">外科</li>
+            <li data-status="child">儿科</li>
+            <li data-status="cr">传染科</li>
+            <li data-status="woman">妇科</li>
+            <li data-status="sj">神经科</li>
+            <li data-status="zl">肿瘤外科</li>
+            <li data-status="gk">骨科</li>
+        </ul>
+        <div class="layui-tab-content" style="height: auto">
+            <div class="layui-tab-item layui-show">
+
+                <table class="layui-table" id="tblResult" lay-filter="test">
+                </table>
+            </div>
+
+            <!--<div class="layui-tab-item">-->
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">一.消化系溃疡</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>反复上腹痛病史，伴反酸、嗳气、上腹饱胀，腹软、剑突下压痛，无反跳痛</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>1. 轻者采用膳食方法，以软食或易消化食物为主，少量多餐，忌酸性刺激性食物。<br>-->
+                               <!--2.疼痛较重者食前及夜间服抗胆碱药物。<br>-->
+                              <!--3.有出血症状时可给小量镇静剂，一般不需禁食，恐引起饥饿及不安，胃肠蠕动增加，婴儿给牛奶饮食，年长儿给软食，否则反而加重出血。<br>-->
+                             <!--4.对大量出血，可给止血药物口服。需要绝对安静，暂时禁食，由消化道外补充液体，输生理盐水及10%葡萄糖液等，必要时输血。<br>-->
+                             <!--5.如出血不止或反复多次出血者，应考虑手术。并发幽门梗阻症状，屡次发作而内科疗法不能奏效或有溃疡穿孔者，均应行外科手术。-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">二.急性胃炎</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>轻者仅有食欲不振、腹痛、恶心、呕吐;严重者可出现呕血、黑便、脱水、电解质及酸碱平衡紊乱，有细菌感染者常伴有全身中毒症状。</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>1.一般治疗：尽量卧床休息，口服葡萄糖一电解质液以补充体液的丢失。如果持续呕吐或明显脱水，则需静脉补充5%—10%葡萄糖盐水及其他相关电解质。鼓励摄人清淡流质或半流质食晶，以防止脱水或治疗轻微的脱水。<br>-->
+                               <!--2.对症治疗：必要时可注射止吐药：例如肌肉注射氯丙嚓25-100mgl日。解痉药：如颠茄8n堪11次，1日3次。止泻药：如思密达每次1袋，1日2-3次。<br>-->
+                              <!--3.抗菌治疗：抗菌素对本病的治疗作用是有争议的。对于感染性腹泻，可适当选用有针对性的抗菌素，如黄连素0.3g口服，1日3次或庆大霉素8万u口服，1日3次等。但应防止抗菌素滥用。-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">三.支气管炎</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>咳嗽，咳痰，气喘，反复感染</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>1.若是细菌感染的支气管炎，主要用些头孢类的抗生素<br/>-->
+                    <!--2.若是病毒感染建议用一些中成药进行治疗，它可以明确改善支气管的症状，如通宣理肺丸可以治疗咳白痰的支气管炎患者、羚羊清肺丸可以治疗咳黄痰的支气管炎患者。<br/>-->
+                    <!--3.常用药物有：复方磺胺甲醛异恶挫,强力毒素,红霉素,青霉素等.治疗无效时,也可以选用病人未用过或少用的药物,如麦迪霉素,螺旋霉素,先锋霉素等.在急性感染控制后,及时停用抗菌药物,以免长期应用引起副作用。-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">四.高血压</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>头疼、疲倦或不安、心律失常、视物模糊、意识丧失</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>1.对普通高血压患者,建议在改善生活方式的基础上,根据高血压患者的总体风险水平决定是否给予降压药物以及药物治疗方案。<br/>-->
+                    <!--2.对妊娠高血压患者,治疗的主要目的是保障分娩的顺利进行,减少并发症,降低病死率。<br/>-->
+                    <!--3.对轻度高血压患者应强调非药物治疗,并积极监测血压、定期复查尿常规等相关检查。<br/>-->
+                <!--</span><br>-->
+            <!--</div>-->
+            <!--<div class="layui-tab-item">-->
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">一.甲状腺疾病</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>多食、消瘦、易怒、情绪激动、失眠、腹泻、脖子增粗、眼球突出等表现</span><br>-->
+                <!--<span><h3-->
+                        <!--style="color: firebrick;">常见诊治：</h3>1.良性甲状腺疾病：多发良性结节，建议以观察为主；结节较大时会压迫气管，或病变于胸骨后时，也可以考虑手术治疗；<br>-->
+                               <!--2、恶性甲状腺疾病：如甲状腺乳头状癌，主要采取手术治疗，包括半切及全切术，大部分手术效果较好，患者可得到治愈。但少数患者术后出现肿瘤侵犯其他器官，出现淋巴结转移，建议进行碘131治疗及服用甲状腺素片等。<br>-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">二.下肢静脉曲张</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>感觉下肢蚂蚁爬行的感觉，查看下肢发现静脉青筋暴露，局部血管变粗，有时突出于皮肤表面，但患者可能没有疼痛。随着病变的发展，患者可能有抽筋，有时夜间抽筋疼醒。-->
+                                                             <!--患者静脉曲张进一步加重，步行一天后，晚间发现下肢脚踝局部可能有浮肿，下肢有酸胀沉重的感觉</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>压迫治疗法、药物疗法、曲张静脉硬化疗法、微创和外科抽除手术-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">三..急性阑尾炎</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>腹痛、恶心、呕吐:急性阑尾炎往往表现出腹痛、恶心、呕吐、腹部的压痛、反跳痛、发热等等症状。</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>1.非手术治疗可用抗生素抗感染治疗。当急性阑尾炎诊断明确，有手术指征，但因患者周身情况或客观条件不允许，可先采取非手术治疗，延缓手术。-->
+                    <!--若急性阑尾炎已合并局限性腹膜炎，形成炎性肿块，也应采用非手术治疗，使炎性肿块吸收，再考虑择期阑尾切除。-->
+                    <!--患者应卧床休息、禁食，给予水、电解质和热量的静脉输入等。<br/>-->
+                   <!--2.手术治疗原则上急性阑尾炎，除黏膜水肿型可以保守后痊愈外，都应采用阑尾切除手术治疗。-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">四.慢性阑尾炎</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>消化不良、慢性腹痛:慢性的阑尾炎往往表现出腹痛、消化不良、腹部不适、慢性腹痛等等症状。</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>手术治疗是惟一有效的方法，但在决定行阑尾切除术时应特别慎重。慢性阑尾炎确诊后，治疗原则上应手术，特别是有急性发作史的患者，更应及时手术。-->
+                <!--</span><br>-->
+
+            <!--</div>-->
+            <!--<div class="layui-tab-item">-->
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">一.小儿流行性感冒</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>单纯型流感常突然起病，畏寒高热，体温可达39℃～40℃，多伴头痛、全身肌肉关节酸痛、极度乏力、食欲减退等全身症状，常有咽喉痛、干咳，可有鼻塞、流涕、胸骨后不适等。</span><br>-->
+                <!--<span><h3-->
+                        <!--style="color: firebrick;">常见诊治：</h3>早期应用抗病毒治疗。要坚持预防隔离与药物治疗并重、対因治疗与对症治疗并重的原则。基本原则包括及早应用抗流感病毒药物，避免盲目或不恰当使用抗菌药物，加强支持治疗，预防和治疗并发症，以及合理应用对症治疗药物等。-->
+<!--抗流感病毒药物治疗。在发病36小时或48小时内尽早开始抗流感病毒药物治疗。虽然有资料表明发病48小时后使用神经氨酸酶抑制剂亦可以有效，但是大多数研究证明早期治疗疗效更为肯定。-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">二.新生儿肺炎</h3>-->
+                <!--<span><h3-->
+                        <!--style="color: firebrick">症状：</h3>常伴有呻吟、体温不升或者体温高，咳嗽很少见然后可能会有憋气、呼吸困难甚至于呼吸暂停、黄疸、双肺听到啰音等等的表现。</span><br>-->
+                <!--<span><h3-->
+                        <!--style="color: firebrick;">常见诊治：</h3>首先要保持呼吸道的通畅，羊水吸入性肺炎，乳汁吸入性肺炎胎粪吸入性肺炎要清理呼吸道，保持呼吸道通畅。另外抗感染治疗，新生儿感染性肺炎早发性的要选择革兰氏阴性菌敏感的抗生素，晚发性感染性肺炎，-->
+                    <!--要选择革兰氏阳性球菌敏感的抗生素。要注意液体量，全天的液体量保持在60到80毫升每公斤每天。如果病情严重，呼吸费力，如口周青紫，必要时候考虑上呼吸机治疗。-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">三.手足口病 </h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>急性起病，发热、口痛、厌食、口腔黏膜出现散在疱疹或溃疡，位于舌、颊黏膜及硬额等处为多，也可波及软腭，牙龈、扁桃体和咽部。手、足、臀部、臂部、腿部出现斑丘疹，后转为疱疹，疱疹周围可有炎性红晕，疱内液体较少。手足部较多，掌背面均有。</span><br>-->
+                <!--<span><h3-->
+                        <!--style="color: firebrick;">常见诊治：</h3>1.一般治疗本病如无并发症，预后一般良好，多在一周内痊愈。主要为对症治疗。<br>-->
+<!--（1）首先隔离患儿，接触者应注意消毒隔离,避免交叉感染。<br>-->
+<!--（2）对症治疗,做好口腔护理。<br>-->
+<!--（3）衣服、被褥要清洁，衣着要舒适、柔软，经常更换。<br>-->
+<!--（4）剪短宝宝的指甲，必要时包裹宝宝双手，防止抓破皮疹<br>-->
+<!--（5）臀部有皮疹的宝宝，应随时清理其大小便，保持臀部清洁干燥。<br>-->
+<!--（6）可服用抗病毒药物及清热解毒中草药，补充维生素B、C等。-->
+                <!--</span><br>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">四.小儿高热</h3>-->
+                <!--<span><h3-->
+                        <!--style="color: firebrick">症状：</h3>不同程度发热以及发热时长不同</span><br>-->
+                <!--<span><h3-->
+                        <!--style="color: firebrick;">常见诊治：</h3>1.注意孩子的精神状态。如果孩子发热虽高，但精神尚好，服药退热后仍能笑能玩，与平时差不多，说明孩子病情不重，可以放心在家中调养。若孩子精神萎靡、倦怠、表情淡漠，则提示病重，应赶快去医院。<br/>-->
+<!--2.观察孩子面色。如果孩子面色如常或者潮红，可以安心在家中护理；若面色暗淡、发黄、发青、发紫，眼神发呆，则说明病情严重，应送医院。-->
+                <!--</span><br>-->
+
+            <!--</div>-->
+            <!--<div class="layui-tab-item"></div>-->
+            <!--<div class="layui-tab-item">-->
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">一.先兆流产</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>停经/阴道出血和腹痛</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>对先兆流产的治疗除卧床休息、严禁性生活外，应对患者营-->
+                    <!--造一个有利于心情稳定、解除紧张气氛的环境，对曾经有流产史者，应给予更多的精神支持。如孕妇孕激素水平低，可用孕激素支持治疗。-->
+                <!--</span><br/>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">二.宫外孕</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>停经/阴道出血/晕厥与休克</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>输卵管切除术适用于内出血并发休克的急症患者，且没有生育要求。-->
+                    <!--有生育要求的年轻妇女，可以行输卵管开窗术。-->
+                <!--</span><br/>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">三.急性子宫颈炎</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>淋菌性宫颈炎和沙眼衣原体性宫颈炎主要侵犯宫颈管内黏膜腺体的柱状上皮，如直接向上蔓延则可导致上生殖道黏膜感染。一般化脓菌则侵入宫颈组织较深，并可沿两侧宫颈淋巴管向上蔓延导致盆腔结缔组织炎。白带增多是急性宫颈炎最常见的、有时甚至是惟一的症状，常呈脓性。由于宫颈炎常与尿道炎、膀胱炎或急性阴道炎、急性子宫内膜炎等并存，常使宫颈炎的其他症状被掩盖，如不同程度的下腹部、腰骶部坠痛及膀胱刺激症状等。急性淋菌性宫颈炎时，可有不同程度的发热和白细胞计数增多。本病常与阴道炎症同时发生，也可同时发生急性子宫内膜炎。</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>主要为抗生素治疗，以全身治疗为主，力求彻底，以免转变为慢性宫颈炎。<br/>-->
+<!--（1）经验性抗生素治疗 对有以下性传播疾病高危因素的患者（如年龄小于25岁，多性伴或新性伴，并且为无保护性性交），在未获得病原体检测结果前，采用针对衣原体的经验性抗生素治疗。<br/>-->
+<!--（2）针对病原体的抗生素治疗 对于获得病原体者，选择针对病原体的抗生素。由于淋病奈瑟菌感染常伴有衣原体感染，因此，若为淋菌性子宫颈炎，治疗时除选用抗淋病奈瑟菌药物外，同时应用抗衣原体感染药物。<br/>-->
+<!--（3）性伴侣的处理 若子宫颈炎患者的病原体为沙眼衣原体及淋病奈瑟菌，应对其性伴进行相应的检查及治疗。-->
+                <!--</span><br/>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">四.细菌性阴道炎</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>1 0%～40%患者无临床症状，有症状者主要表现为阴道分泌物增多，有鱼腥味，尤其性交后加重，可伴有轻度外阴瘙痒或灼热感。检查见阴道黏膜无充血的炎症表现，分泌物特点为灰白色，均匀一致，稀薄，常黏附于阴道壁，容易将分泌物从阴道壁拭去。</span><br>-->
+                <!--<span><h3-->
+                        <!--style="color: firebrick;">常见诊治：</h3>治疗原则为选用抗厌氧菌药物，主要有甲硝唑、替硝唑、克林霉素。注意：口服和局部使用甲硝唑时，都可能发生双硫仑样反应。<br/>-->
+<!--（1）口服药物：首选甲硝唑。<br/>-->
+<!--（2）局部药物治疗。<br/>-->
+<!--（3）性伴侣不需常规治疗。-->
+                <!--</span><br/>-->
+            <!--</div>-->
+            <!--<div class="layui-tab-item">-->
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">一.无先兆偏头痛</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>恶心和（或）呕吐/畏光和畏声</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>非药物治疗主要是物理疗法可采取用磁疗、氧疗、心理疏导 ，缓解压力，保持健康的生活方式， 避免各种偏头痛诱因。 药物性治疗分为发作期治疗和预防性治疗。发作期的治疗为了取得最佳疗效，通常应在症状起始时立即服药。治疗药物包括非特异性止痛药如非甾体类抗炎药（ NSAIDs） 和阿片类药物，特异性药物如麦角类制剂和曲普坦类药物 。药物选择应根据头痛程度、伴随症状、既往用药情况等综合考虑， 进行个体化治疗。-->
+                <!--</span><br/>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">二.老年性痴呆</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>认知功能下降、精神症状和行为障碍、日常生活能力的逐渐下降。</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>（1）抗焦虑药 如有焦虑、激越、失眠症状，可考虑用短效苯二氮卓类药，如阿普唑仑、奥沙西泮（去甲羟安定）、劳拉西泮（罗拉）和三唑仑（海乐神）。<br/>-->
+                    <!--(2）脑代谢赋活药物 此类药物的作用较多而复杂，主要是扩张脑血管，增加脑皮质细胞对氧、葡萄糖、氨基酸和磷脂的利用，促进脑细胞的恢复，改善功能脑细胞，从而达到提高记忆力目的。-->
+                <!--</span><br/>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">三.癫痫</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>全面强直-阵挛性发作/失神发作/强直发作/肌阵挛发作/痉挛/失张力发作</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>目前癫痫的治疗包括药物治疗、手术治疗、神经调控治疗等。-->
+                <!--</span><br/>-->
+
+                <!--<h3 style="color: firebrick;font-size: large;font-weight: bold">四.脑血管疾病</h3>-->
+                <!--<span><h3 style="color: firebrick">症状：</h3>临床上以急性发病居多，多为中、老年患者，表现为半身不遂、言语障碍等，俗称中风或卒中</span><br>-->
+                <!--<span><h3 style="color: firebrick;">常见诊治：</h3>1、应注意加强体力和体育锻炼。身体运动有利于改善血液循环，促进脂类物质消耗，减少脂类物质在血管内沉积，增加纤维蛋白溶酶活性及减轻体重，因此应坚持力所能及的家务劳动和体育锻炼。对有智力障碍、精神障碍和肢体活动不便者，要加强护理，以防止意外事故的发生。<br/>-->
+<!--2、注意控制饮食。主要是应限制高胆固醇、高脂肪饮食的摄入量，以减少脂类物质在血管内沉积。如限制肥肉、猪油、蛋黄、鱼子及动物内脏等食物摄入，同时还要注意避免高糖饮食，因高糖饮食同样会引起脂肪代谢紊乱。应多吃豆制品、蔬菜、水果及含纤维素较多的食物。食用油以植物油为主。饮食宜清淡，不可吃得太饱，最好戒烟忌酒。-->
+                <!--</span><br/>-->
+            <!--</div>-->
+            <!--<div class="layui-tab-item">7</div>-->
+            <!--<div class="layui-tab-item">8</div>-->
+
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

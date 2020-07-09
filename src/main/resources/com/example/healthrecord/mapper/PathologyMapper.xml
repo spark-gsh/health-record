@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.healthrecord.mapper.PathologyMapper">
+  <resultMap id="BaseResultMap" type="com.example.healthrecord.entity.Pathology">
+    <id column="p_id" jdbcType="VARCHAR" property="pId" />
+    <result column="administration" jdbcType="VARCHAR" property="administration" />
+    <result column="disease_name" jdbcType="VARCHAR" property="diseaseName" />
+    <result column="symptom" jdbcType="VARCHAR" property="symptom" />
+    <result column="treat" jdbcType="VARCHAR" property="treat" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    p_id, administration, disease_name, symptom, `treat`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pathology
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </select>
+    <select id="selectBypathology" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from pathology
+      <where>
+        <if test="record.diseaseName!=null and record.diseaseName!=''">
+          <bind name="diseaseName" value="'%'+record.diseaseName+'%'"/>
+          and disease_name like #{diseaseName}
+        </if>
+        <if test="record.administration!=null and record.administration!=''">
+          and administration = #{record.administration}
+        </if>
+      </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from pathology
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.healthrecord.entity.Pathology">
+    insert into pathology (p_id, administration, disease_name, 
+      symptom, `treat`)
+    values (#{pId,jdbcType=VARCHAR}, #{administration,jdbcType=VARCHAR}, #{diseaseName,jdbcType=VARCHAR}, 
+      #{symptom,jdbcType=VARCHAR}, #{treat,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.healthrecord.entity.Pathology">
+    insert into pathology
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pId != null">
+        p_id,
+      </if>
+      <if test="administration != null">
+        administration,
+      </if>
+      <if test="diseaseName != null">
+        disease_name,
+      </if>
+      <if test="symptom != null">
+        symptom,
+      </if>
+      <if test="treat != null">
+        `treat`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pId != null">
+        #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="administration != null">
+        #{administration,jdbcType=VARCHAR},
+      </if>
+      <if test="diseaseName != null">
+        #{diseaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="symptom != null">
+        #{symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="treat != null">
+        #{treat,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.healthrecord.entity.Pathology">
+    update pathology
+    <set>
+      <if test="administration != null">
+        administration = #{administration,jdbcType=VARCHAR},
+      </if>
+      <if test="diseaseName != null">
+        disease_name = #{diseaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="symptom != null">
+        symptom = #{symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="treat != null">
+        `treat` = #{treat,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.healthrecord.entity.Pathology">
+    update pathology
+    set administration = #{administration,jdbcType=VARCHAR},
+      disease_name = #{diseaseName,jdbcType=VARCHAR},
+      symptom = #{symptom,jdbcType=VARCHAR},
+      `treat` = #{treat,jdbcType=VARCHAR}
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+</mapper>

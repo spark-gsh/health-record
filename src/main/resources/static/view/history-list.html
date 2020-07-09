@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="js/history-list.js"></script>
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="welcome.html">首页</a>
+          <a href="peace-area-list.html">
+              一般群体档案管理
+          </a>
+        <a>
+          <cite>病历管理</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+            <input id="tbxCaseId" type="text" name="username" placeholder="病历编号查询" autocomplete="off"
+                   class="layui-input">
+            <button id="search" class="layui-btn" type="button"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+    </div>
+    <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="getCheckData()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="openModel()"><i class="layui-icon"></i>新建病历</button>
+        <span class="x-right" style="line-height:40px" id="searchNum">共有数据：88 条</span>
+    </xblock>
+
+    <table class="layui-table" id="tblResult" lay-filter="test">
+    </table>
+
+
+</div>
+<!--编辑/查看按钮-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs " lay-event="look">详细信息</a>
+</script>
+
+<!--模态框-->
+<div id="model_frame" style="display: none">
+    <form class="layui-form">
+        <div class="layui-form-item" style="display: none;">
+            <label class="layui-form-label" for="chid">
+                <span class="x-red">*</span>病历编号
+            </label>
+            <div class="layui-input-inline">
+                <input name="chid" class="layui-input" id="chid" type="text" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="name">
+                <span class="x-red">*</span>姓名
+            </label>
+            <div class="layui-input-inline">
+                <input name="username" class="layui-input" id="name" type="text" lay-verify="required">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>请确保姓名的真实性
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="idNumber">
+                <span class="x-red">*</span>身份证号
+            </label>
+            <div class="layui-input-inline">
+                <input name="idNumber" class="layui-input" id="idNumber" type="text" lay-verify="required">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>请确保准确性
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="administration">
+                <span class="x-red">*</span>科室
+            </label>
+            <div class="layui-input-inline">
+                <input name="administration" class="layui-input" id="administration" type="text" lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="date">
+                <span class="x-red">*</span>到诊时间
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="date">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">主诉</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" placeholder="请输入内容" id="cc"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">现病史</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" placeholder="请输入内容" id="hpi"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">既往史</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" placeholder="请输入内容" id="pmh"></textarea>
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="x-red">*</span>药物过敏史</label>
+            <div class="layui-input-block">
+                <input name="allergy" title="青霉素类" type="checkbox" value="1">
+                <input name="allergy" title="黄连素类" type="checkbox" value="2">
+                <input name="allergy" title="磺胺类" type="checkbox" value="3">
+                <input name="allergy" title="链毒素" type="checkbox" value="4">
+                <input name="allergy" title="安定" type="checkbox" value="5">
+                <label class="layui-form-label" for="other">
+                    其他：
+                </label>
+                <div class="layui-input-inline">
+                    <input name="other" class="layui-input" id="other" type="text" lay-verify="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">体格检查</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" placeholder="请输入内容" id="physical_check"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">辅助检查</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" placeholder="请输入内容" id="a_e"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">初步诊断</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" placeholder="请输入内容" id="primary"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">处理意见</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" placeholder="请输入内容" id="processing"></textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="doctor">
+                <span class="x-red">*</span>医师
+            </label>
+            <div class="layui-input-inline">
+                <input name="doctor" class="layui-input" id="doctor" type="text" lay-verify="required">
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#date' //指定元素
+        });
+    });
+</script>
+
+</body>
+
+</html>

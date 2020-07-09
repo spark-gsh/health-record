@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <link rel="stylesheet" href="lib/layui/css/layui.css">
+    <link rel="stylesheet" href="css/history-list.css">
+
+
+</head>
+<body>
+<div id="app">
+
+
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="welcome.html">首页</a>
+          <a href="peace-area-list.html">
+              一般群体档案管理
+          </a>
+        <a href="history-list.html">
+          <cite>病历管理</cite>
+        </a>
+          <a>
+              详细信息
+          </a>
+      </span>
+        <a class="layui-btn layui-btn-small layui-btn-own" style="line-height:1.6em;margin-top:3px;float:right"
+           href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+
+    <div id="table_wrap">
+        <table width="93%" cellspacing="0" cellpadding="0">
+            <thead class="table_head">
+            <tr>
+                <th colspan="12">
+                    <h1>病 历</h1>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="height: auto">
+                <td class="css-own" style="width: 7%">编 号：</td>
+                <td>{{items.cHId}}</td>
+                <td class="css-own">科 室：</td>
+                <td style="width: 6%;border-bottom: 2px solid #eaeaea">{{items.administrative}}</td>
+                <td class="css-own" style="border-bottom: 2px solid #eaeaea">就诊时间：</td>
+                <td style="border-bottom: 2px solid #eaeaea">{{items.historyDate}}</td>
+                <td class="css-own" style="width: 7%;border-bottom: 2px solid #eaeaea">姓 名：</td>
+                <td style="width: 7%;border-bottom: 2px solid #eaeaea">{{items.basicRecord.name}}</td>
+                <td class="css-own" style="border-bottom: 2px solid #eaeaea">出生日期：</td>
+                <td style="border-bottom: 2px solid #eaeaea">{{items.basicRecord.birth}}</td>
+                <td class="css-own" style="width: 6%;border-bottom: 2px solid #eaeaea">性 别：</td>
+                <td style="width: 6%">{{items.basicRecord.gender}}</td>
+            </tr>
+
+            <tr style="height: auto">
+                <td class="css-own">主 诉：</td>
+                <td colspan="5">{{items.cc}}</td>
+                <td class="css-own">现 病 史：</td>
+                <td colspan="5" style="width: 48%;">{{items.hpi}}</td>
+            </tr>
+
+            <tr style="height: auto">
+                <td class="css-own">既 往 史：</td>
+                <td colspan="5">{{items.pmh}}</td>
+                <td class="css-own">药物过敏史：</td>
+                <td colspan="5">
+                    <div>
+                        <form class="layui-form ">
+                            <input type="checkbox" name="guomin" title="青霉素类" value="1"
+                                                                                  :checked="isChecked(items.allergy,checkValueForQMS)">
+                            <input type="checkbox" name="guomin" title="黄连素类" value="2"
+                                                                                  :checked="isChecked(items.allergy,checkValueForHLS)">
+                            <input type="checkbox" name="guomin" title="磺胺类" value="3"
+                                                                                 :checked="isChecked(items.allergy,checkValueForHA)"><br/>
+                            <input type="checkbox" name="guomin" title="链 毒 素" value="4"
+                                                                                    :checked="isChecked(items.allergy,checkValueForLDS)">
+                            <input type="checkbox" name="guomin" title="安  定" value="5"
+                                                                                  :checked="isChecked(items.allergy,checkValueForAD)">
+                            <input style="height: 28px;" type="text" name="guomin" title="其他"
+                                                                                   v-model="items.otherForallergy">
+                        </form>
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr style="height: auto">
+                <td class="css-own">体格检查：</td>
+                <td colspan="5">{{items.physicalCheck}}</td>
+                <td class="css-own">辅助检查：</td>
+                <td colspan="5">{{items.auxiliaryExamination}}</td>
+            </tr>
+
+
+            <tr style="height: auto">
+                <td class="css-own">初步诊断：</td>
+                <td colspan="5">{{items.primaryDiagnosis}}</td>
+                <td class="css-own">处理意见：</td>
+                <td colspan="5">{{items.processingOpinion}}</td>
+            </tr>
+
+
+            <tr style="height: auto">
+                <td colspan="6"></td>
+                <td class="css-own">医 师：</td>
+                <td colspan="5">{{items.doctor}}</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+<script src="lib/vue/vue.js"></script>
+<script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/xadmin.js"></script>
+<script src="js/history-detail.js"></script>
+</html>
