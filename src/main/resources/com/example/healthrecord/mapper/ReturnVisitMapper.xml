@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.healthrecord.mapper.ReturnVisitMapper">
+  <resultMap id="BaseResultMap" type="com.example.healthrecord.entity.ReturnVisit">
+    <id column="r_v_id" jdbcType="VARCHAR" property="rVId" />
+    <result column="b_r_id" jdbcType="VARCHAR" property="bRId" />
+    <result column="administrative" jdbcType="VARCHAR" property="administrative" />
+    <result column="disease" jdbcType="VARCHAR" property="disease" />
+    <result column="recovery" jdbcType="VARCHAR" property="recovery" />
+    <result column="return_date" jdbcType="VARCHAR" property="returnDate" />
+    <result column="evaluation" jdbcType="VARCHAR" property="evaluation" />
+    <result column="advice" jdbcType="VARCHAR" property="advice" />
+    <result column="r_e_id" jdbcType="VARCHAR" property="rEId" />
+
+    <association property="basicRecord" column="b_r_id"
+                 select="com.example.healthrecord.mapper.BasicRecordMapper.selectByPrimaryKey"/>
+    <association property="returnEvaluation" column="evaluation" select="com.example.healthrecord.mapper.ReturnEvaluationDAO.selectByPrimaryKey" fetchType="lazy"/>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    r_v_id, b_r_id, administrative, disease, `recovery`, return_date, evaluation, advice, 
+    r_e_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from return_visit
+    where r_v_id = #{rVId,jdbcType=VARCHAR}
+  </select>
+    <select id="selectByExampleCount" resultType="java.lang.Integer">
+      select
+      count(1)
+      from return_visit
+      <where>
+        <if test="rVId!=null and rVId!=''">
+          <bind name="rVId" value="'%'+rVId+'%'"/>
+          and r_v_id like #{rVId}
+        </if>
+      </where>
+    </select>
+  <select id="searchByExampleWithPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from return_visit
+    <where>
+      <if test="record.rVId != null and record.rVId != ''">
+        <bind name="rVId" value="'%'+record.rVId+'%'"/>
+        and r_v_id like #{rVId}
+      </if>
+    </where>
+    limit #{begin},#{limit}
+  </select>
+    <select id="searchNum" resultType="java.lang.Integer">
+      select
+      count(*)
+      from return_visit
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from return_visit
+    where r_v_id = #{rVId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.healthrecord.entity.ReturnVisit">
+    insert into return_visit (r_v_id, b_r_id, administrative, 
+      disease, `recovery`, return_date, 
+      evaluation, advice, r_e_id
+      )
+    values (#{rVId,jdbcType=VARCHAR}, #{bRId,jdbcType=VARCHAR}, #{administrative,jdbcType=VARCHAR}, 
+      #{disease,jdbcType=VARCHAR}, #{recovery,jdbcType=VARCHAR}, #{returnDate,jdbcType=VARCHAR}, 
+      #{evaluation,jdbcType=VARCHAR}, #{advice,jdbcType=VARCHAR}, #{rEId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.healthrecord.entity.ReturnVisit">
+    insert into return_visit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rVId != null">
+        r_v_id,
+      </if>
+      <if test="bRId != null">
+        b_r_id,
+      </if>
+      <if test="administrative != null">
+        administrative,
+      </if>
+      <if test="disease != null">
+        disease,
+      </if>
+      <if test="recovery != null">
+        `recovery`,
+      </if>
+      <if test="returnDate != null">
+        return_date,
+      </if>
+      <if test="evaluation != null">
+        evaluation,
+      </if>
+      <if test="advice != null">
+        advice,
+      </if>
+      <if test="rEId != null">
+        r_e_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rVId != null">
+        #{rVId,jdbcType=VARCHAR},
+      </if>
+      <if test="bRId != null">
+        #{bRId,jdbcType=VARCHAR},
+      </if>
+      <if test="administrative != null">
+        #{administrative,jdbcType=VARCHAR},
+      </if>
+      <if test="disease != null">
+        #{disease,jdbcType=VARCHAR},
+      </if>
+      <if test="recovery != null">
+        #{recovery,jdbcType=VARCHAR},
+      </if>
+      <if test="returnDate != null">
+        #{returnDate,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluation != null">
+        #{evaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="advice != null">
+        #{advice,jdbcType=VARCHAR},
+      </if>
+      <if test="rEId != null">
+        #{rEId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.healthrecord.entity.ReturnVisit">
+    update return_visit
+    <set>
+      <if test="bRId != null">
+        b_r_id = #{bRId,jdbcType=VARCHAR},
+      </if>
+      <if test="administrative != null">
+        administrative = #{administrative,jdbcType=VARCHAR},
+      </if>
+      <if test="disease != null">
+        disease = #{disease,jdbcType=VARCHAR},
+      </if>
+      <if test="recovery != null">
+        `recovery` = #{recovery,jdbcType=VARCHAR},
+      </if>
+      <if test="returnDate != null">
+        return_date = #{returnDate,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluation != null">
+        evaluation = #{evaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="advice != null">
+        advice = #{advice,jdbcType=VARCHAR},
+      </if>
+      <if test="rEId != null">
+        r_e_id = #{rEId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where r_v_id = #{rVId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.healthrecord.entity.ReturnVisit">
+    update return_visit
+    set b_r_id = #{bRId,jdbcType=VARCHAR},
+      administrative = #{administrative,jdbcType=VARCHAR},
+      disease = #{disease,jdbcType=VARCHAR},
+      `recovery` = #{recovery,jdbcType=VARCHAR},
+      return_date = #{returnDate,jdbcType=VARCHAR},
+      evaluation = #{evaluation,jdbcType=VARCHAR},
+      advice = #{advice,jdbcType=VARCHAR},
+      r_e_id = #{rEId,jdbcType=VARCHAR}
+    where r_v_id = #{rVId,jdbcType=VARCHAR}
+  </update>
+</mapper>

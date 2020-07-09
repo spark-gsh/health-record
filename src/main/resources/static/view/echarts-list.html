@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/echarts/echarts.min.js"></script>
+
+
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div style="float:left;">
+
+    <div id="bar" style="width: 1400px; height: 400px;margin-top: 30px"></div>
+    <div id="main" style="width: 600px;height:400px; margin-top: 30px;float: left;"></div><br/>
+    <div id="vartity" style="width: 600px;height:400px; margin-top: 30px;float:left;">1</div>
+</div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var C = echarts.init(document.getElementById('vartity'));
+    // 指定图表的配置项和数据
+    C.setOption({
+        title : {
+            text: '社会群体人数统计表',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: searchPeople()
+        },
+        series : [
+            {
+                name: '社会群体人数',
+                type: 'pie',
+                radius: '55%',
+                data:[
+                    {value:1400, name:'一般群体'},
+                    {value:927, name:'儿童群体'},
+                    {value:1356, name:'老年群体'},
+                    {value:692, name:'残疾群体'},
+                    {value:309, name:'孕产妇群体'}
+
+                ]
+            }
+        ]
+    });
+
+    function searchPeople() {
+        $.ajax({
+            url:'/people/searchAll',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+
+                // alert(data.desc);
+                C.setOption({
+                    legend: {
+                        data: data.desc
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+<script src="js/echarts-list.js"></script>
+</body>
+
+
+</html>

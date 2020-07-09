@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.healthrecord.mapper.BasicRecordMapper">
+  <resultMap id="BaseResultMap" type="com.example.healthrecord.entity.BasicRecord">
+    <id column="b_r_id" jdbcType="VARCHAR" property="bRId" />
+    <result column="vartity_id" jdbcType="VARCHAR" property="vartityId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="id_number" jdbcType="BIGINT" property="idNumber" />
+    <result column="RPR_type" jdbcType="VARCHAR" property="rprType" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="birth" jdbcType="VARCHAR" property="birth" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="blood_type" jdbcType="VARCHAR" property="bloodType" />
+    <result column="culture" jdbcType="VARCHAR" property="culture" />
+    <result column="job" jdbcType="VARCHAR" property="job" />
+    <result column="marital_status" jdbcType="VARCHAR" property="maritalStatus" />
+    <result column="c_h_id" jdbcType="VARCHAR" property="cHId" />
+    <result column="m_c_id" jdbcType="VARCHAR" property="mCId" />
+    <result column="area_id" jdbcType="VARCHAR" property="areaId" />
+    <result column="tele" jdbcType="BIGINT" property="tele" />
+    <result column="r_t_id" jdbcType="VARCHAR" property="rTId" />
+    <association property="sysDict" column="vartity_id" select="com.example.healthrecord.mapper.SysDictMapper.selectByVartity" fetchType="lazy"/>
+    <association property="areaDivide" column="area_id" select="com.example.healthrecord.mapper.AreaDivideMapper.selectByPrimaryKey" fetchType="lazy"/>
+    <association property="recordType" column="r_t_id" select="com.example.healthrecord.mapper.RecordTypeMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <resultMap id="groupByNum" type="com.example.healthrecord.entity.BasicRecord">
+    <result column="area_id" jdbcType="VARCHAR" property="areaId"/>
+    <result column="num" jdbcType="VARCHAR" property="recordCount"/>
+  </resultMap>
+
+  <resultMap id="groupByDisease" type="com.example.healthrecord.entity.BasicRecord">
+    <result column="r_t_id" jdbcType="VARCHAR" property="rTId" />
+    <result column="d_num" jdbcType="VARCHAR" property="diseaseCount"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    b_r_id, vartity_id, `name`, id_number, RPR_type, gender, birth, nation, country, 
+    address, blood_type, culture, job, marital_status, c_h_id, m_c_id, area_id, tele,r_t_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from basic_record
+    where b_r_id = #{bRId,jdbcType=VARCHAR}
+  </select>
+    <select id="selectByExampleCount" resultType="java.lang.Integer">
+      select
+      count(1)
+      from basic_record
+      <where>
+        <if test="record.name!=null and record.name!=''">
+          <bind name="name" value="'%'+record.name+'%'"/>
+          and name like #{name}
+        </if>
+        <if test="record.areaId!=null and record.areaId!=''">
+          and area_id = #{record.areaId}
+        </if>
+      </where>
+    </select>
+  <select id="searchByExampleWithPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from basic_record
+    <where>
+      <if test="record.name != null and record.name != ''">
+        <bind name="name" value="'%'+record.name+'%'"/>
+        and name like #{name}
+      </if>
+      <if test="record.areaId!=null and record.areaId!=''">
+        and area_id = #{record.areaId}
+      </if>
+    </where>
+    limit #{begin},#{limit}
+  </select>
+  <select id="searchNum" resultType="java.lang.Integer">
+       select
+      count(*)
+      from basic_record
+  </select>
+    <select id="selectByName" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from basic_record
+      where name = #{name,jdbcType=VARCHAR}
+    </select>
+    <select id="groupByNum" resultMap="groupByNum">
+      select area_id,count(b_r_id) num
+      from basic_record
+      group by area_id
+    </select>
+  <select id="selectBypypertension"   resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from basic_record
+    <where>
+      <if test="record.name!=null and record.name!=''">
+        <bind name="name" value="'%'+record.name+'%'"/>
+        and name like #{name}
+      </if>
+      <if test="record.rTId!=null and record.rTId!=''">
+        and r_t_id = #{record.rTId}
+      </if>
+
+    </where>
+  </select>
+  <select id="groupByRecord" resultMap="groupByDisease">
+    select r_t_id,count(b_r_id) d_num
+      from basic_record
+      group by r_t_id
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from basic_record
+    where b_r_id = #{bRId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.healthrecord.entity.BasicRecord">
+    insert into basic_record (b_r_id, vartity_id, `name`, 
+      id_number, RPR_type, gender, 
+      birth, nation, country, 
+      address, blood_type, culture, 
+      job, marital_status, c_h_id, 
+      m_c_id, area_id,tele,r_t_id)
+    values (#{bRId,jdbcType=VARCHAR}, #{vartityId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{idNumber,jdbcType=BIGINT}, #{rprType,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
+      #{birth,jdbcType=TIMESTAMP}, #{nation,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{bloodType,jdbcType=VARCHAR}, #{culture,jdbcType=VARCHAR}, 
+      #{job,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, #{cHId,jdbcType=VARCHAR}, 
+      #{mCId,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR},#{tele,jdbcType=BIGINT},#{rTId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.healthrecord.entity.BasicRecord">
+    insert into basic_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bRId != null">
+        b_r_id,
+      </if>
+      <if test="vartityId != null">
+        vartity_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="idNumber != null">
+        id_number,
+      </if>
+      <if test="rprType != null">
+        RPR_type,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="birth != null">
+        birth,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+      <if test="country != null">
+        country,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="bloodType != null">
+        blood_type,
+      </if>
+      <if test="culture != null">
+        culture,
+      </if>
+      <if test="job != null">
+        job,
+      </if>
+      <if test="maritalStatus != null">
+        marital_status,
+      </if>
+      <if test="cHId != null">
+        c_h_id,
+      </if>
+      <if test="mCId != null">
+        m_c_id,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="tele != null">
+        tele,
+      </if>
+      <if test="rTId != null">
+        r_t_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bRId != null">
+        #{bRId,jdbcType=VARCHAR},
+      </if>
+      <if test="vartityId != null">
+        #{vartityId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null">
+        #{idNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rprType != null">
+        #{rprType,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null">
+        #{birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="bloodType != null">
+        #{bloodType,jdbcType=VARCHAR},
+      </if>
+      <if test="culture != null">
+        #{culture,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null">
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="maritalStatus != null">
+        #{maritalStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cHId != null">
+        #{cHId,jdbcType=VARCHAR},
+      </if>
+      <if test="mCId != null">
+        #{mCId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="tele != null">
+        #{tele,jdbcType=BIGINT},
+      </if>
+      <if test="rTId != null">
+        #{rTId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.healthrecord.entity.BasicRecord">
+    update basic_record
+    <set>
+      <if test="vartityId != null">
+        vartity_id = #{vartityId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null">
+        id_number = #{idNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rprType != null">
+        RPR_type = #{rprType,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null">
+        birth = #{birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nation != null">
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="bloodType != null">
+        blood_type = #{bloodType,jdbcType=VARCHAR},
+      </if>
+      <if test="culture != null">
+        culture = #{culture,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null">
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="maritalStatus != null">
+        marital_status = #{maritalStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cHId != null">
+        c_h_id = #{cHId,jdbcType=VARCHAR},
+      </if>
+      <if test="mCId != null">
+        m_c_id = #{mCId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="tele != null">
+        tele = #{tele,jdbcType=BIGINT}
+      </if>
+      <if test="rTId != null">
+        r_t_id = #{rTId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where b_r_id = #{bRId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.healthrecord.entity.BasicRecord">
+    update basic_record
+    set vartity_id = #{vartityId,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      id_number = #{idNumber,jdbcType=INTEGER},
+      RPR_type = #{rprType,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      birth = #{birth,jdbcType=TIMESTAMP},
+      nation = #{nation,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      blood_type = #{bloodType,jdbcType=VARCHAR},
+      culture = #{culture,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      marital_status = #{maritalStatus,jdbcType=VARCHAR},
+      c_h_id = #{cHId,jdbcType=VARCHAR},
+      m_c_id = #{mCId,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      tele = #{tele,jdbcType=BIGINT},
+      r_t_id = #{rTId,jdbcType=VARCHAR}
+    where b_r_id = #{bRId,jdbcType=VARCHAR}
+  </update>
+    <update id="updateBybRId">
+      update basic_record
+      set c_h_id = #{cHId,jdbcType=VARCHAR}
+      where b_r_id = #{bRId,jdbcType=VARCHAR}
+    </update>
+  <update id="updateBymCId">
+    update basic_record
+      set m_c_id = #{mCId,jdbcType=VARCHAR}
+      where b_r_id = #{bRId,jdbcType=VARCHAR}
+  </update>
+</mapper>

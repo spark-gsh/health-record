@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.healthrecord.mapper.AreaDivideMapper">
+  <resultMap id="BaseResultMap" type="com.example.healthrecord.entity.AreaDivide">
+    <id column="a_d_id" jdbcType="VARCHAR" property="aDId" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    a_d_id, `desc`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from area_divide
+    where a_d_id = #{aDId,jdbcType=VARCHAR}
+  </select>
+    <select id="searchAll" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from area_divide
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from area_divide
+    where a_d_id = #{aDId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.healthrecord.entity.AreaDivide">
+    insert into area_divide (a_d_id, `desc`)
+    values (#{aDId,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.healthrecord.entity.AreaDivide">
+    insert into area_divide
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aDId != null">
+        a_d_id,
+      </if>
+      <if test="desc != null">
+        `desc`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aDId != null">
+        #{aDId,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.healthrecord.entity.AreaDivide">
+    update area_divide
+    <set>
+      <if test="desc != null">
+        `desc` = #{desc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where a_d_id = #{aDId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.healthrecord.entity.AreaDivide">
+    update area_divide
+    set `desc` = #{desc,jdbcType=VARCHAR}
+    where a_d_id = #{aDId,jdbcType=VARCHAR}
+  </update>
+</mapper>

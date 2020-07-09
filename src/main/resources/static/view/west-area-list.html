@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="js/peace-area-list.js"></script>
+    <script src="js/add-delete.js"></script>
+    <style type="text/css">
+        .layui-table {
+            background-color: lightgray;
+        }
+
+        .layui-table tbody tr:hover, .layui-table thead tr {
+            background-color: lightgray;
+        }
+
+        th {
+            background-color: #009688;
+            color: white;
+        }
+
+        .street {
+            background-color: #009688;
+            color: white;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .street li{
+            list-style-type: none;
+            float: left;
+            width: 15%;
+            color: lightsteelblue;
+        }
+        .title{
+            margin-left: 25px;
+            font-size: large;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="welcome.html">首页</a>
+        <a href="area-record-list.html">
+          <cite>行政区域档案管理</cite></a>
+          <a>
+              <cite>河西区档案管理</cite>
+          </a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+            <input id="tbxRecordId" type="text" name="username" placeholder="姓名查询" autocomplete="off"
+                   class="layui-input">
+            <button id="search" class="layui-btn" type="button"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+    </div>
+    <xblock>
+        <div class="street"><br/>
+            <ul id="street">
+                <li class="title">街 道 规 划:</li>
+                <li value="TJ103.001">天津市河西区大营门街道</li>
+                <li value="TJ103.002">天津市河西区下瓦房街道</li>
+                <li value="TJ103.003">天津市河西区马场街道</li>
+                <li value="TJ103.004">天津市河西区天塔街道</li>
+            </ul>
+        </div>
+        <button class="layui-btn layui-btn-danger" onclick="getCheckData()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="openModel()"><i class="layui-icon"></i>新建档案</button>
+        <!--<span class="x-right" style="line-height:40px" id="searchNum">共有数据：88 条</span>-->
+    </xblock>
+
+    <table class="layui-table" id="tblResult" lay-filter="test">
+    </table>
+
+
+</div>
+<!--编辑按钮-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="edit">编辑</a>
+</script>
+
+<!--查看体检报告按钮-->
+<script type="text/html" id="toolCheck">
+    <a class="layui-btn layui-btn-xs " lay-event="lookCheck">查看</a>
+</script>
+<!--查看病历按钮-->
+<script type="text/html" id="toolCase">
+    <a class="layui-btn layui-btn-xs " lay-event="lookCase">查看</a>
+</script>
+<script type="text/html" id="toolReturn">
+    <a class="layui-btn layui-btn-xs " lay-event="toolReturn">查看</a>
+</script>
+<!--模态框-->
+<div id="model_frame" style="display: none">
+    <form class="layui-form">
+        <div class="layui-form-item" style="display: none;">
+            <label class="layui-form-label" for="bRId">
+                <span class="x-red">*</span>档案编号
+            </label>
+            <div class="layui-input-inline">
+                <input name="username" class="layui-input" id="bRId" type="text" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="name">
+                <span class="x-red">*</span>姓名
+            </label>
+            <div class="layui-input-inline">
+                <input name="username" class="layui-input" id="name" type="text" lay-verify="required">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>请确保姓名的真实性
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="idNumber">
+                <span class="x-red">*</span>身份证号
+            </label>
+            <div class="layui-input-inline">
+                <input name="idNumber" class="layui-input" id="idNumber" type="text" lay-verify="required">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>请确保准确性
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="vartityId">
+                <span class="x-red">*</span>人群类型
+            </label>
+            <div class="layui-input-inline">
+                <select name="vartity" id="vartityId" lay-verify="">
+                    <option value="">请选择一个人群类型</option>
+                    <option value="RQ.01">一般人群</option>
+                    <option value="RQ.02">老年群体</option>
+                    <option value="RQ.03">儿童群体</option>
+                    <option value="RQ.04">残疾人群体</option>
+                    <option value="RQ.05">孕产妇群体</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="areaId">
+                <span class="x-red">*</span>居住区域
+            </label>
+            <div class="layui-input-inline">
+                <select name="area" id="areaId" lay-verify="" lay-search>
+                    <option value="">请选择一个区域</option>
+                    <option value="TJ101.001">天津市和平区劝业场街道</option>
+                    <option value="TJ101.002">天津市和平区小白楼街道</option>
+                    <option value="TJ101.003">天津市和平区五大道街道</option>
+                    <option value="TJ102.001">天津市河东区二号桥街道</option>
+                    <option value="TJ102.002">天津市河东区大王庄街道</option>
+                    <option value="TJ102.003">天津市河东区中三门街道</option>
+                    <option value="TJ102.004">天津市河东区富民路街道</option>
+                    <option value="TJ103.001">天津市河西区大营门街道</option>
+                    <option value="TJ103.002">天津市河西区下瓦房街道</option>
+                    <option value="TJ103.003">天津市河西区马场街道</option>
+                    <option value="TJ103.004">天津市河西区天塔街道</option>
+                    <option value="TJ104.001">天津市南开区长虹街道</option>
+                    <option value="TJ104.002">天津市南开区水上公园街道</option>
+                    <option value="TJ104.003">天津市南开区华苑街道</option>
+                    <option value="TJ104.004">天津市南开区王顶堤街道</option>
+                    <option value="TJ105.001">天津市河北区望海楼街道</option>
+                    <option value="TJ105.002">天津市河北区新开路街道</option>
+                    <option value="TJ105.003">天津市河北区铁东路街道</option>
+                    <option value="TJ105.004">天津市河北区王串场街道</option>
+                    <option value="TJ106.001">天津市红桥区大胡同街道</option>
+                    <option value="TJ106.002">天津市红桥区丁字沽街道</option>
+                    <option value="TJ106.003">天津市红桥区咸阳北路街道</option>
+                    <option value="TJ106.004">天津市红桥区西于庄街道</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="typeid">
+                <span class="x-red">*</span>疾病类型
+            </label>
+            <div class="layui-input-inline">
+                <select name="type" id="typeid" lay-verify="">
+                    <option value="">请选择一个疾病类型</option>
+                    <option value="CR.01">肺结核</option>
+                    <option value="CR.02">病毒性肝炎</option>
+                    <option value="CR.03">梅毒</option>
+                    <option value="CR.04">艾滋病</option>
+                    <option value="MX.01">高血压</option>
+                    <option value="MX.02">糖尿病</option>
+                    <option value="MX.03">恶性肿瘤</option>
+                    <option value="MX.04">心脑血管疾病</option>
+                    <option value="MX.05">神经异常/精神病</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="x-red">*</span>户口类型</label>
+            <div class="layui-input-block">
+                <input name="admini" title="农业户口" type="radio" value="1">
+                <input name="admini" title="非农业户口" type="radio" value="2">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="x-red">*</span>性别</label>
+            <div class="layui-input-block">
+                <input name="gender" title="男" type="radio" value="1">
+                <input name="gender" title="女" type="radio" value="2">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="birth">
+                <span class="x-red">*</span>出生日期
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="birth">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="tele">
+                <span class="x-red">*</span>联系方式
+            </label>
+            <div class="layui-input-inline">
+                <input name="tele" class="layui-input" id="tele" type="text" lay-verify="required">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>请确保准确性
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="nation">
+                <span class="x-red">*</span>民族
+            </label>
+            <div class="layui-input-inline">
+                <input name="nation" class="layui-input" id="nation" type="text" lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="country">
+                <span class="x-red">*</span>国籍
+            </label>
+            <div class="layui-input-inline">
+                <input name="country" class="layui-input" id="country" type="text" lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="address">
+                <span class="x-red">*</span>详细地址
+            </label>
+            <div class="layui-input-inline">
+                <input name="address" class="layui-input" id="address" type="text" lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="x-red">*</span>血型</label>
+            <div class="layui-input-block">
+                <input name="blood" title="A型" type="radio" value="1">
+                <input name="blood" title="B型" type="radio" value="2">
+                <input name="blood" title="O型" type="radio" value="3">
+                <input name="blood" title="AB型" type="radio" value="4">
+                <input name="blood" title="RH阴型" type="radio" value="5">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="culture">
+                <span class="x-red">*</span>文化程度
+            </label>
+            <div class="layui-input-inline">
+                <input name="culture" class="layui-input" id="culture" type="text">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="job">
+                <span class="x-red">*</span>职业
+            </label>
+            <div class="layui-input-inline">
+                <input name="job" class="layui-input" id="job" type="text" lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="x-red">*</span>婚姻状态</label>
+            <div class="layui-input-block">
+                <input name="marital" title="是" type="radio" value="1">
+                <input name="marital" title="否" type="radio" value="2">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="display: none;">
+            <label class="layui-form-label" for="mFId">
+                <span class="x-red">*</span>体检报告
+            </label>
+            <div class="layui-input-inline">
+                <input name="mFId" class="layui-input" id="mFId" type="text" lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="display: none;">
+            <label class="layui-form-label" for="cHId">
+                <span class="x-red">*</span>病例编号
+            </label>
+            <div class="layui-input-inline">
+                <input name="cHId" class="layui-input" id="cHId" type="text" lay-verify="required">
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+</body>
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#birth' //指定元素
+        });
+    });
+    localStorage.setItem("area","TJ103.001")
+</script>
+</html>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.healthrecord.mapper.CaseHistoryMapper">
+    <resultMap id="BaseResultMap" type="com.example.healthrecord.entity.CaseHistory">
+        <id column="c_h_id" jdbcType="VARCHAR" property="cHId"/>
+        <result column="b_r_id" jdbcType="VARCHAR" property="bRId"/>
+        <result column="administrative" jdbcType="VARCHAR" property="administrative"/>
+        <result column="history_date" jdbcType="VARCHAR" property="historyDate"/>
+        <result column="Cc" jdbcType="VARCHAR" property="cc"/>
+        <result column="hpi" jdbcType="VARCHAR" property="hpi"/>
+        <result column="pmh" jdbcType="VARCHAR" property="pmh"/>
+        <result column="allergy" jdbcType="VARCHAR" property="allergy"/>
+        <result column="Physical_check" jdbcType="VARCHAR" property="physicalCheck"/>
+        <result column="Auxiliary_examination" jdbcType="VARCHAR" property="auxiliaryExamination"/>
+        <result column="Primary_diagnosis" jdbcType="VARCHAR" property="primaryDiagnosis"/>
+        <result column="Processing_opinion" jdbcType="VARCHAR" property="processingOpinion"/>
+        <result column="doctor" jdbcType="VARCHAR" property="doctor"/>
+
+        <association property="basicRecord" column="b_r_id"
+                     select="com.example.healthrecord.mapper.BasicRecordMapper.selectByPrimaryKey"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    c_h_id, b_r_id, administrative, history_date, Cc, hpi, pmh, allergy, Physical_check, 
+    Auxiliary_examination, Primary_diagnosis, Processing_opinion, doctor
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from case_history
+        where c_h_id = #{cHId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByExampleCount" resultType="java.lang.Integer">
+        select
+        count(1)
+        from case_history
+        <where>
+            <if test="cHId!=null and cHId!=''">
+                <bind name="cHId" value="'%'+cHId+'%'"/>
+                and c_h_id like #{cHId}
+            </if>
+        </where>
+    </select>
+    <select id="searchByExampleWithPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from case_history
+        <where>
+            <if test="record.cHId != null and record.cHId != ''">
+                <bind name="cHId" value="'%'+record.cHId+'%'"/>
+                and c_h_id like #{cHId}
+            </if>
+        </where>
+        limit #{begin},#{limit}
+    </select>
+    <select id="searchNum" resultType="java.lang.Integer">
+      select
+      count(*)
+      from case_history
+  </select>
+    <select id="searchBybRId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from case_history
+        where b_r_id = #{bRId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from case_history
+    where c_h_id = #{cHId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.example.healthrecord.entity.CaseHistory">
+    insert into case_history (c_h_id, b_r_id, administrative, 
+      history_date, Cc, hpi, 
+      pmh, allergy, Physical_check, 
+      Auxiliary_examination, Primary_diagnosis, 
+      Processing_opinion, doctor)
+    values (#{cHId,jdbcType=VARCHAR}, #{bRId,jdbcType=VARCHAR}, #{administrative,jdbcType=VARCHAR}, 
+      #{historyDate,jdbcType=TIMESTAMP}, #{cc,jdbcType=VARCHAR}, #{hpi,jdbcType=VARCHAR}, 
+      #{pmh,jdbcType=VARCHAR}, #{allergy,jdbcType=VARCHAR}, #{physicalCheck,jdbcType=VARCHAR}, 
+      #{auxiliaryExamination,jdbcType=VARCHAR}, #{primaryDiagnosis,jdbcType=VARCHAR}, 
+      #{processingOpinion,jdbcType=VARCHAR}, #{doctor,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.example.healthrecord.entity.CaseHistory">
+        insert into case_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cHId != null">
+                c_h_id,
+            </if>
+            <if test="bRId != null">
+                b_r_id,
+            </if>
+            <if test="administrative != null">
+                administrative,
+            </if>
+            <if test="historyDate != null">
+                history_date,
+            </if>
+            <if test="cc != null">
+                Cc,
+            </if>
+            <if test="hpi != null">
+                hpi,
+            </if>
+            <if test="pmh != null">
+                pmh,
+            </if>
+            <if test="allergy != null">
+                allergy,
+            </if>
+            <if test="physicalCheck != null">
+                Physical_check,
+            </if>
+            <if test="auxiliaryExamination != null">
+                Auxiliary_examination,
+            </if>
+            <if test="primaryDiagnosis != null">
+                Primary_diagnosis,
+            </if>
+            <if test="processingOpinion != null">
+                Processing_opinion,
+            </if>
+            <if test="doctor != null">
+                doctor,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cHId != null">
+                #{cHId,jdbcType=VARCHAR},
+            </if>
+            <if test="bRId != null">
+                #{bRId,jdbcType=VARCHAR},
+            </if>
+            <if test="administrative != null">
+                #{administrative,jdbcType=VARCHAR},
+            </if>
+            <if test="historyDate != null">
+                #{historyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cc != null">
+                #{cc,jdbcType=VARCHAR},
+            </if>
+            <if test="hpi != null">
+                #{hpi,jdbcType=VARCHAR},
+            </if>
+            <if test="pmh != null">
+                #{pmh,jdbcType=VARCHAR},
+            </if>
+            <if test="allergy != null">
+                #{allergy,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalCheck != null">
+                #{physicalCheck,jdbcType=VARCHAR},
+            </if>
+            <if test="auxiliaryExamination != null">
+                #{auxiliaryExamination,jdbcType=VARCHAR},
+            </if>
+            <if test="primaryDiagnosis != null">
+                #{primaryDiagnosis,jdbcType=VARCHAR},
+            </if>
+            <if test="processingOpinion != null">
+                #{processingOpinion,jdbcType=VARCHAR},
+            </if>
+            <if test="doctor != null">
+                #{doctor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.healthrecord.entity.CaseHistory">
+        update case_history
+        <set>
+            <if test="bRId != null">
+                b_r_id = #{bRId,jdbcType=VARCHAR},
+            </if>
+            <if test="administrative != null">
+                administrative = #{administrative,jdbcType=VARCHAR},
+            </if>
+            <if test="historyDate != null">
+                history_date = #{historyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cc != null">
+                Cc = #{cc,jdbcType=VARCHAR},
+            </if>
+            <if test="hpi != null">
+                hpi = #{hpi,jdbcType=VARCHAR},
+            </if>
+            <if test="pmh != null">
+                pmh = #{pmh,jdbcType=VARCHAR},
+            </if>
+            <if test="allergy != null">
+                allergy = #{allergy,jdbcType=VARCHAR},
+            </if>
+            <if test="physicalCheck != null">
+                Physical_check = #{physicalCheck,jdbcType=VARCHAR},
+            </if>
+            <if test="auxiliaryExamination != null">
+                Auxiliary_examination = #{auxiliaryExamination,jdbcType=VARCHAR},
+            </if>
+            <if test="primaryDiagnosis != null">
+                Primary_diagnosis = #{primaryDiagnosis,jdbcType=VARCHAR},
+            </if>
+            <if test="processingOpinion != null">
+                Processing_opinion = #{processingOpinion,jdbcType=VARCHAR},
+            </if>
+            <if test="doctor != null">
+                doctor = #{doctor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where c_h_id = #{cHId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.example.healthrecord.entity.CaseHistory">
+    update case_history
+    set b_r_id = #{bRId,jdbcType=VARCHAR},
+      administrative = #{administrative,jdbcType=VARCHAR},
+      history_date = #{historyDate,jdbcType=TIMESTAMP},
+      Cc = #{cc,jdbcType=VARCHAR},
+      hpi = #{hpi,jdbcType=VARCHAR},
+      pmh = #{pmh,jdbcType=VARCHAR},
+      allergy = #{allergy,jdbcType=VARCHAR},
+      Physical_check = #{physicalCheck,jdbcType=VARCHAR},
+      Auxiliary_examination = #{auxiliaryExamination,jdbcType=VARCHAR},
+      Primary_diagnosis = #{primaryDiagnosis,jdbcType=VARCHAR},
+      Processing_opinion = #{processingOpinion,jdbcType=VARCHAR},
+      doctor = #{doctor,jdbcType=VARCHAR}
+    where c_h_id = #{cHId,jdbcType=VARCHAR}
+  </update>
+</mapper>
